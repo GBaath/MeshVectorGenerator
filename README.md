@@ -4,11 +4,12 @@ The Entire cpp file is located [**here**](https://github.com/GBaath/UnrealFuncti
 
 This work is made in conjuction with the [**Unreal Product configurator**](https://github.com/GBaath/Portfolio/tree/main/UnrealProductConfigurator) and it's main use case is to generate points within specifed bounds, for camera interpolation in order to get some variety while still being easy to iterate on and visualize.
 
----
-
 *Interpolating points witihn is currently w.i.p. some class members are unused or unimplemented*
 
-Summary: Read all the vertecies, and ranomize points within sphere or box, check rayintersection with the transformed input mesh, optimizing the generation space overtime.
+---
+
+
+***TLDR:*** Read all the vertecies, and ranomize points within sphere or box, check rayintersection with the transformed input mesh, optimizing the generation space overtime.
 Big & bulky mesh = faster, generating bounding volume not meant for realtime. 
 
 ---
@@ -16,11 +17,20 @@ Big & bulky mesh = faster, generating bounding volume not meant for realtime.
 
 *Works for scaled and rotated meshes as long as they're whole, generate the bounding shape (green box/red & yellow spheres) before generating points (red dots)*
 
-<img src="UnrealEditor_OKyBkqS4zf.gif" width="50%"/>
-<img src="UnrealEditor_3ihPtLCA8T.gif" width="50%"/>
-<img src="UnrealEditor_8iOL31nLiu.gif" width="50%"/>
-<img src="UnrealEditor_HU5glkD1YN.gif" width="50%"/>
 
+<table>
+  <tr>
+<td width="50%"><img src="UnrealEditor_OKyBkqS4zf.gif" width="100%"/>
+<td width="50%"><img src="UnrealEditor_3ihPtLCA8T.gif" width="100%"/>
+  </tr>
+</table>
+
+<table>
+  <tr>
+<td width="50%"><img src="UnrealEditor_8iOL31nLiu.gif" width="100%"/>
+<td width="50%"><img src="UnrealEditor_HU5glkD1YN.gif" width="100%"/>
+  </tr>
+</table>
 
 ---
 

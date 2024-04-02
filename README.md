@@ -7,7 +7,15 @@ The Entire cpp file is located [**here**](https://github.com/GBaath/UnrealFuncti
 Summary: Read all the vertecies, and ranomize points within sphere or box, check rayintersection with the transformed input mesh, optimizing the generation space overtime.
 Big & bulky mesh = faster, generating bounding volume not meant for realtime. 
 
+---
+
 # Generate Bounding Volume
+**Generate vectors within limits of box or sphere depending on best fit**
+
+**Mesh is quite uniform - boundingsphere is most optimal, yellow = max Radius, red = avarage**
+<img src="Radiuses.png" width="50%"/>
+<img src="OrientedBox.png" width="50%"/>
+
 
 <details>
 <summary>GetDataFromVertecies</summary>

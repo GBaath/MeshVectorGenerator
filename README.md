@@ -2,6 +2,10 @@
 *A solution for generating points within the bounds of scaled and rotated meshes in Unreal*
 The Entire cpp file is located [**here**](https://github.com/GBaath/UnrealFunctionLibraries/tree/main/.cpp) 
 
+This work is made in conjuction with the [**Unreal Product configurator**](https://github.com/GBaath/Portfolio/tree/main/UnrealProductConfigurator) and it's main use case is to generate points within specifed bounds, for camera interpolation in order to get some variety while still being easy to iterate on and visualize.
+
+---
+
 *Interpolating points witihn is currently w.i.p. some class members are unused or unimplemented*
 
 Summary: Read all the vertecies, and ranomize points within sphere or box, check rayintersection with the transformed input mesh, optimizing the generation space overtime.

@@ -16,6 +16,7 @@ Big & bulky mesh = faster, generating bounding volume not meant for realtime.
 
 *Works for scaled and rotated meshes as long as they're whole, generate the bounding shape (green box/red & yellow spheres) before generating points (red dots)*
 
+<img src="UnrealEditor_OKyBkqS4zf.gif" width="50%"/>
 <img src="UnrealEditor_3ihPtLCA8T.gif" width="50%"/>
 <img src="UnrealEditor_8iOL31nLiu.gif" width="50%"/>
 <img src="UnrealEditor_HU5glkD1YN.gif" width="50%"/>

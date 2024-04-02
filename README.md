@@ -6,6 +6,11 @@ The Entire cpp file is located [**here**](https://github.com/GBaath/UnrealFuncti
 
 Summary: Read all the vertecies, and ranomize points within sphere or box, check rayintersection with the transformed input mesh, optimizing the generation space overtime.
 Big & bulky mesh = faster, generating bounding volume not meant for realtime. 
+---
+# **DEMO**
+
+
+
 
 ---
 
@@ -191,6 +196,14 @@ one could apply the fact that a ray would always intersect the edge of any polyg
 Using [**the Möller-Trumbore algorithm**](https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm) we can check the amount of intersections of a ray from every triangle from a mesh, determining if said point is within the bounds.
 The triangle data is recieved from the UKismetProceduralMeshLibrary::GetSectionFromStaticMesh.
 
+---
+
+*Rays are traced from points in the bounding volumes and intersection checked towards the mesh triangles, odd nr of intersections = point is in bounds (red dot)*
+
+<img src="RayCheck.PNG" width="50%"/>
+
+
+
 <details>
 <summary>RayIntersectsTriangle</summary>
 
@@ -308,5 +321,93 @@ int UVolumeInterpolator::RayMeshIntersectionCount(UStaticMeshComponent* Mesh, FV
 ```
 </details>
 
+
+
 # Optimise size
 
+In the case of the sphere being the boundingvolume, the the spread of the random vector will shrink towards the avarage, increaasing the chance per every failed iteration, to decrease the risk of long calculation times.
+I have not yet found a similar solution for the case when the box is the bounding volume, since the center of the box is not necessarily within the bounds of the mesh.
+
+<details>
+<summary>GetRandomPointInMeshBounds</summary>
+
+ ```cpp
+
+FVector UVolumeInterpolator::GetRandomPointsInMeshBounds(UStaticMeshComponent* Mesh, const FTransform WT, float& OutAvgRadius, float& OutMaxRadius, bool& OutTryBox)
+{
+    FJsonSerializableArrayInt Triangles;
+    TArray<FVector> Normals;
+    FOrientedBox BoundingBox = OrientedBox;
+
+    FVector Point;
+    TArray<FVector> IntersectionPoints;
+    int maxiterations = 1000;
+    int i = 0;
+
+    //Spherebounds were bigger than Boxbounds, use box
+    if (BoxvolumeIsSmallest) {
+         DrawOrientedBox(OrientedBox, Mesh, FColor::Green, .1f, 3.f);
+        do
+        {
+            Point = BoundingBox.Center;
+            FVector AddVector = FVector::Zero();
+
+            AddVector += BoundingBox.AxisX * FMath::Lerp(BoundingBox.ExtentX * -.5f, BoundingBox.ExtentX * .5f, FMath::FRand());
+            AddVector += BoundingBox.AxisY * FMath::Lerp(BoundingBox.ExtentY * -.5f, BoundingBox.ExtentY * .5f, FMath::FRand());
+            AddVector += BoundingBox.AxisZ * FMath::Lerp(BoundingBox.ExtentZ * -.5f, BoundingBox.ExtentZ * .5f, FMath::FRand());
+
+            Point += AddVector;
+
+            i++;
+        } //point in polygon intersections always odd
+        while (RayMeshIntersectionCount(Mesh, Point, FVector(1, 0, 1), WT, IntersectionPoints) % 2 == 0 && i < maxiterations);
+
+
+
+        //debug
+        /*for (FVector V : IntersectionPoints)
+        {
+            UKismetSystemLibrary::DrawDebugPoint(GetWorld(), V, 5.f, FLinearColor::White, 3.f);
+        }
+        UE_LOG(LogTemp, Warning, TEXT("%d"), IntersectionPoints.Num());
+        UE_LOG(LogTemp, Warning, TEXT("%d"), i);*/
+    }
+    //Úsing radius
+    else {
+        do {
+            //less range for every iteration
+            float AlphaMinus = FMath::Min((i * 0.005f), .5f);
+            Point = UKismetMathLibrary::RandomUnitVector();
+
+            //1 is toward maxradius, -1 is toward 0
+            Alpha = FMath::FRandRange(FMath::Min(0, -1.0f + AlphaMinus), 1.0f - AlphaMinus);
+
+            if (Alpha > 0)
+                Point *= FMath::Lerp(AvarageRadius, LargestRadius, Alpha);
+            else
+                Point *= FMath::Lerp(0, AvarageRadius, FMath::Abs(Alpha));
+
+            UCommonFunctions::TransformVector(Point, WT);
+     
+            i++;
+        } //point in polygon intersections always odd
+        while (RayMeshIntersectionCount(Mesh, Point, FVector(1, 0, 1), WT, IntersectionPoints) % 2 == 0 && i < maxiterations);
+
+
+        //debug
+        /*/for (FVector V : IntersectionPoints)
+        {
+            UKismetSystemLibrary::DrawDebugPoint(GetWorld(), V, 5.f, FLinearColor::White, 3.f);
+        }
+        UE_LOG(LogTemp, Warning, TEXT("%d"), i);
+        */
+    }
+
+    OutAvgRadius = AvarageRadius;
+    OutMaxRadius = LargestRadius;
+    OutTryBox = BoxvolumeIsSmallest;
+
+    return Point;
+}
+```
+</details>

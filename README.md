@@ -336,6 +336,7 @@ int UVolumeInterpolator::RayMeshIntersectionCount(UStaticMeshComponent* Mesh, FV
 
 In the case of the sphere being the boundingvolume, the the spread of the random vector will shrink towards the avarage, increaasing the chance per every failed iteration, to decrease the risk of long calculation times.
 I have not yet found a similar solution for the case when the box is the bounding volume, since the center of the box is not necessarily within the bounds of the mesh.
+In the case of very "empty" bounding volumes, there's a maxiterations limit, disable this if accuracy is more important than speed.
 
 <details>
 <summary>GetRandomPointInMeshBounds</summary>

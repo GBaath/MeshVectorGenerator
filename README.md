@@ -1,6 +1,6 @@
 # MeshVectorGenerator
 *A solution for generating points within the bounds of scaled and rotated meshes in Unreal*
-The Entire cpp file is located [**here**](https://github.com/GBaath/UnrealFunctionLibraries/tree/main/.cpp) 
+Download the plugin [**here**]([https://github.com/GBaath/UnrealPlugins/tree/main/Plugins/GB_GeometryFunctions])
 
 This work is made in conjuction with the [**Unreal Product configurator**](https://github.com/GBaath/Portfolio/tree/main/UnrealProductConfigurator) and it's main use case is to generate points within specifed bounds, for camera interpolation in order to get some variety while still being easy to iterate on and visualize. demo of this at the bottom of the page.
 
